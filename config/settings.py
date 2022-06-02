@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Custom apps
     "apps.transactions"
+    "apps.countries"
     # Installed apps
 ]
 

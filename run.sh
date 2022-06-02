@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 echo Run django migrations
-python manage.py migrate || exit 0
+python manage.py migrate || exit 1
 echo Collect staticfiles
-python manage.py collectstatic --noinput --clear || exit 0
+python manage.py collectstatic --noinput --clear || exit 2
 
 exec "$@"
 

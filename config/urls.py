@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+import debug_toolbar
+from .settings import DEBUG
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -23,3 +26,6 @@ urlpatterns = [
         include("apps.transactions.urls", namespace="transactions"),
     ),
 ]
+
+if DEBUG:
+    urlpatterns.insert(0, path("__debug__/", include(debug_toolbar.urls)))

@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Custom apps
-    "apps.transactions"
-    "apps.countries"
+    "apps.transactions",
+    "apps.countries",
+    "apps.taxes",
     # Installed apps
 ]
 

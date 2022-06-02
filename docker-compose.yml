@@ -18,6 +18,7 @@ services:
     volumes:
       - ./staticfiles:/usr/src/app/staticfiles/
       - ./media:/usr/src/app/media/
+      - ./logs:/usr/src/app/logs/
     ports:
       - ${WEB_SERVER}:${LOCAL_WEB_PORT}:${WEB_PORT}
     env_file: .env

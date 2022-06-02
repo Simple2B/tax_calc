@@ -14,7 +14,7 @@ services:
 
   app:
     build: .
-    command: sh ./run.sh
+    command: ./run.sh
     volumes:
       - ./:/usr/src/app/
       - templates:/usr/src/app/templates/
@@ -31,3 +31,4 @@ volumes:
   templates:
   staticfiles:
   media:
+  

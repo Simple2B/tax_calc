@@ -10,10 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from email.policy import default
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
-from decouple import config, Csv
+from decouple import config, Csv, Choices
 from dj_database_url import parse as db_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -133,3 +132,66 @@ MEDIA_ROOT = "media/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Logging configuration
+# https://docs.djangoproject.com/en/4.0/topics/logging/
+LOGS_ROOT = "logs/"
+
+LOG_LEVEL = config(
+    "LOG_LEVEL",
+    default="INFO",
+    cast=Choices(
+        [
+            "DEBUG",
+            "INFO",
+            "WARNING",
+            "ERROR",
+            "CRITICAL",
+        ]
+    ),
+)
+LOGGING = {
+    "version": 1,
+    # The version number of our log
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+    },
+    # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
+    "handlers": {
+        "file": {
+            "level": LOG_LEVEL,
+            "class": "logging.FileHandler",
+            "filename": LOGS_ROOT + "{}.log".format(LOG_LEVEL),
+            "formatter": "verbose",
+        },
+    },
+    # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
+    "loggers": {
+        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+        "": {
+            "handlers": [
+                "file"
+            ],  # notice how file variable is called in handler which has been defined above
+            "level": LOG_LEVEL,
+            "propagate": True,
+        },
+    },
+}
+
+# debug_toolbar settings
+if DEBUG:
+
+    INTERNAL_IPS = ("127.0.0.1",)
+
+    MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
+
+    INSTALLED_APPS += ("debug_toolbar",)
+
+    DEBUG_TOOLBAR_CONFIG = {
+        "INTERCEPT_REDIRECTS": False,
+    }
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

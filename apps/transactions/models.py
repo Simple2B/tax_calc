@@ -1,9 +1,9 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, DO_NOTHING
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from apps.countries.models import Country
+from apps.countries.models import Countries
 
 User = get_user_model()
 
@@ -66,7 +66,7 @@ class Transactions(models.Model):
     )
     activity_period = models.DateField(editable=False, null=False, blank=False)
     sales_channel = models.CharField(max_length=8, choices=SalesChannel.choices)
-    marketplace = models.ForeignKey(Country)
+    marketplace = models.ForeignKey(Countries, on_delete=DO_NOTHING)
     program_type = models.CharField(max_length=16, choices=ProgramType.choices)
     transaction_type = models.CharField(max_length=16, choices=TransactionType.choices)
     transaction_event_id = models.CharField(max_length=32)

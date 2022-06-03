@@ -22,4 +22,5 @@ urlpatterns = [
         "transactions/",
         include("apps.transactions.urls", namespace="transactions"),
     ),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]

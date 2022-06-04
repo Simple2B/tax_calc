@@ -66,7 +66,8 @@ class Transactions(models.Model):
     )
     activity_period = models.DateField(editable=False, null=False, blank=False)
     sales_channel = models.CharField(max_length=8, choices=SalesChannel.choices)
-    marketplace = models.ForeignKey(Countries, on_delete=DO_NOTHING)
+    # marketplace = models.ForeignKey(Countries, on_delete=DO_NOTHING)
+    marketplace = models.CharField(max_length=32, null=True, blank=True)
     program_type = models.CharField(max_length=16, choices=ProgramType.choices)
     transaction_type = models.CharField(max_length=16, choices=TransactionType.choices)
     transaction_event_id = models.CharField(max_length=32)
@@ -130,15 +131,17 @@ class Transactions(models.Model):
         max_length=64, null=True, blank=True
     )
     product_tax_code = models.CharField(max_length=32, choices=ProductTaxCode.choices)
-    departure_city = models.CharField(max_length=64, null=True, blank=True)
+    depature_city = models.CharField(max_length=64, null=True, blank=True)
     departure_country = models.CharField(max_length=8, null=True, blank=True)
     departure_post_code = models.CharField(max_length=16, null=True, blank=True)
     arrival_city = models.CharField(max_length=64, null=True, blank=True)
     arrival_country = models.CharField(max_length=8, null=True, blank=True)
     arrival_post_code = models.CharField(max_length=16, null=True, blank=True)
-    sate_depart_country = models.CharField(max_length=8, null=True, blank=True)
-    sate_arrival_country = models.CharField(max_length=8, null=True, blank=True)
-    transaction_mode = models.CharField(max_length=32, choices=TransactionMode.choices)
+    sale_depart_country = models.CharField(max_length=8, null=True, blank=True)
+    sale_arrival_country = models.CharField(max_length=8, null=True, blank=True)
+    transportation_mode = models.CharField(
+        max_length=32, choices=TransactionMode.choices
+    )
     delivery_conditions = models.CharField(
         max_length=8, choices=DeliveryConditions.choices
     )

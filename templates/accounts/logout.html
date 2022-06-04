@@ -1,0 +1,20 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}<title>Sign Out</title>{% endblock %}
+
+{% block content %}
+  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <a href="{% url 'accounts:login' %}" class="w-100 btn btn-lg btn-secondary">Sign in</a>
+  <p class="white mb-0">
+    <br>
+    <a href="{% url 'accounts:reset_password' %}">Forget password?</a>
+  </p>
+  <p class="white mb-0">
+    <br>If you are not a member, please
+    <a href="{% url 'accounts:register' %}" class="white">sign up</a>.
+  </p>
+</form>
+
+<p class="mt-5 mb-3 text-muted">&copy; {% now 'Y' %}</p>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base_accounts.html' %}
+
+{% block title %}<title>Sign In</title>{% endblock %}
+
+{% block content %}
+<form action="{% url 'accounts:login' %}" method="post">
+  {% csrf_token %}
+  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <div class="form-floating">
+    <input type="username" name="username" class="form-control" id="floatingInput" placeholder="Username" required>
+    <label for="floatingInput">Username</label>
+  </div>
+  <div class="form-floating">
+    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+    <label for="floatingPassword">Password</label>
+  </div>
+  <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign in</button>
+  <p class="white mb-0">
+    <br>
+    <a href="{% url 'accounts:reset_password' %}">Forget password?</a>
+  </p>
+  <p class="white mb-0">
+    <br>If you are not a member, please
+    <a href="{% url 'accounts:register' %}" class="white">sign up</a>.
+  </p>
+</form>
+
+<p class="mt-5 mb-3 text-muted">&copy; {% now 'Y' %}</p>
+
+{% endblock %}

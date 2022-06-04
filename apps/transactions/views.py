@@ -6,6 +6,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -22,6 +23,9 @@ User = get_user_model()
 @login_required
 def transactions(request):
     transactions = Transactions.objects.filter(user=request.user)
+    paginator = Paginator(transactions, 50)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     context = {
         "count": len(transactions),
         "headers": [
@@ -30,7 +34,7 @@ def transactions(request):
             "SALES_CHANNEL",
             "MARKETPLACE",
         ],
-        "data": transactions,
+        "data": page_obj,
     }
     return render(request, "transaction/list.html", context)
 

@@ -7,17 +7,22 @@ User = get_user_model()
 
 class Countries(models.Model):
     class Country(models.TextChoices):
-        DE = "Germany"
-        FR = "France"
-        PL = "Poland"
-        CZ = "Czech Republic"
-        UK = "United Kingdom"
-        IT = "Italy"
-        ES = "Spain"
+        Germany = "DE"
+        France = "FR"
+        Poland = "PL"
+        Czech_Republic = "CZ"
+        United_Kingdom = "UK"
+        Italy = "IT"
+        Spain = "ES"
 
     user = models.ForeignKey(User, on_delete=CASCADE)
     country = models.CharField(
         max_length=16, choices=Country.choices, null=False, blank=False
     )
+
+    class Meta:
+        verbose_name = "country"
+        verbose_name_plural = "countries"
+
     # TODO: What fields are needed for tax?
     # Every field specific from user

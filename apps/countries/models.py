@@ -17,7 +17,7 @@ class Country(models.Model):
 
     user = models.ForeignKey(User, on_delete=CASCADE)
     country = models.CharField(
-        max_length=16, choices=CountryName.choices, null=False, blank=False
+        unique=True, max_length=16, choices=CountryName.choices, null=False, blank=False
     )
 
     class Meta:

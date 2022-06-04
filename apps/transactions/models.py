@@ -175,7 +175,6 @@ class Transaction(models.Model):
     vat_inv_number = models.CharField(max_length=32, null=True, blank=True)
     vat_inv_converted_amt = models.FloatField(null=True, blank=True)
     vat_inv_currency_code = models.CharField(max_length=8, null=True, blank=True)
-    vat_inv_converted_amt = models.FloatField(null=True, blank=True)
     vat_inv_exchange_rate = models.FloatField(null=True, blank=True)
     vat_inv_exchange_rate_date = models.DateField(null=True, blank=True)
     export_outside_eu = models.CharField(max_length=8, choices=ExportOutsideEu.choices)

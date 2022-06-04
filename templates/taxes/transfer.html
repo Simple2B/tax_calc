@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Transfer</title>{% endblock %}
+
+{% block content %}
+<h2>Transfer</h2>
+{% if data %}
+  {% include 'common/pagination.html' %}
+{% endif %}
+<div class="table-responsive">
+  {% include 'common/transactions_table.html' %}
+</div>
+{% endblock %}

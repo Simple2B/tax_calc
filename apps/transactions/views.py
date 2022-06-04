@@ -13,8 +13,8 @@ from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 import pandas as pd
-from .models import Transactions
-from apps.countries.models import Countries
+from .models import Transaction
+from apps.countries.models import Country
 from .forms import UploadFileForm
 
 User = get_user_model()
@@ -22,7 +22,7 @@ User = get_user_model()
 
 @login_required
 def transactions(request):
-    transactions = Transactions.objects.filter(user=request.user)
+    transactions = Transaction.objects.filter(user=request.user)
     paginator = Paginator(transactions, 50)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -40,7 +40,7 @@ def transactions(request):
 
 
 class TransactionDetail(LoginRequiredMixin, DetailView):
-    model = Transactions
+    model = Transaction
 
 
 @login_required
@@ -74,7 +74,7 @@ def upload(request):
                     obj.get("vat_inv_exchange_rate_date")
                 ).date()
                 try:
-                    transaction = Transactions(**obj)
+                    transaction = Transaction(**obj)
                     transaction.save()
                     transaction.full_clean()
                 except:
@@ -91,4 +91,4 @@ def upload(request):
 
 
 class TransactionUpdate(LoginRequiredMixin, UpdateView):
-    model = Transactions
+    model = Transaction

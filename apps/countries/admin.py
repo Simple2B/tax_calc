@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import Countries
+from .models import Country
 
-admin.site.register(Countries)
+admin.site.register(Country)

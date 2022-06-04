@@ -5,8 +5,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Countries(models.Model):
-    class Country(models.TextChoices):
+class Country(models.Model):
+    class CountryName(models.TextChoices):
         Germany = "DE"
         France = "FR"
         Poland = "PL"
@@ -17,7 +17,7 @@ class Countries(models.Model):
 
     user = models.ForeignKey(User, on_delete=CASCADE)
     country = models.CharField(
-        max_length=16, choices=Country.choices, null=False, blank=False
+        max_length=16, choices=CountryName.choices, null=False, blank=False
     )
 
     class Meta:

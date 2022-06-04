@@ -3,12 +3,12 @@ from django.db.models.deletion import CASCADE, DO_NOTHING
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from apps.countries.models import Countries
+from apps.countries.models import Country
 
 User = get_user_model()
 
 
-class Transactions(models.Model):
+class Transaction(models.Model):
     class SalesChannel(models.TextChoices):
         AFN = "AFN"
         UNDEFINED = "N/A"
@@ -66,7 +66,7 @@ class Transactions(models.Model):
     )
     activity_period = models.DateField(editable=False, null=False, blank=False)
     sales_channel = models.CharField(max_length=8, choices=SalesChannel.choices)
-    # marketplace = models.ForeignKey(Countries, on_delete=DO_NOTHING)
+    # marketplace = models.ForeignKey(Country, on_delete=DO_NOTHING)
     marketplace = models.CharField(max_length=32, null=True, blank=True)
     program_type = models.CharField(max_length=16, choices=ProgramType.choices)
     transaction_type = models.CharField(max_length=16, choices=TransactionType.choices)

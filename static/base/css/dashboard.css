@@ -143,7 +143,3 @@ body {
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
-
-button[type="submit"] {
-  margin-top: 10px;
-}

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
+from django.urls import reverse_lazy
 from decouple import config, Csv, Choices
 from dj_database_url import parse as db_url
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Custom apps
+    "apps.accounts",
     "apps.transactions",
     "apps.countries",
     "apps.taxes",
@@ -62,7 +64,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -104,6 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = reverse_lazy("accounts:login")
+LOGOUT_REDIRECT_URL = reverse_lazy("index")
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -122,6 +128,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = "staticfiles/"
+STATICFILES_DIRS = ["static/"]
 
 # Media files
 # https://docs.djangoproject.com/en/4.0/topics/files/

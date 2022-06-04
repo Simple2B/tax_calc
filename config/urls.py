@@ -17,15 +17,18 @@ from django.contrib import admin
 from django.urls import include, path
 import debug_toolbar
 from .settings import DEBUG
-
+from .views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", index, name="index"),
+    path("", include("apps.accounts.urls", namespace="accounts")),
     path(
         "transactions/",
         include("apps.transactions.urls", namespace="transactions"),
     ),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("countries/", include("apps.countries.urls", namespace="countries")),
+    path("taxes/", include("apps.taxes.urls", namespace="taxes")),
 ]
 
 if DEBUG:

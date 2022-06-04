@@ -41,7 +41,6 @@ RUN poetry install --no-dev --no-interaction --no-ansi
 
 # Copy run script
 COPY run.sh .
-RUN chmod +x run.sh
 
 # Copy project
 COPY . .

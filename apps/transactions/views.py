@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 import pandas as pd
 from .models import Transaction
 from apps.countries.models import Country
@@ -45,8 +46,21 @@ class TransactionDetail(LoginRequiredMixin, DetailView):
 
 @login_required
 def upload(request):
+    statistics = (
+        Transaction.objects.filter(user=request.user)
+        .values("activity_period")
+        .annotate(transaction_count=Count("id"))
+    )
+    context = {
+        "headers": [
+            "ACTIVITY PERIOD",
+            "COUNT",
+        ],
+        "data": statistics,
+    }
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
+        context["form"] = form
         if form.is_valid():
             df = pd.read_csv(
                 request.FILES["file"],
@@ -84,10 +98,11 @@ def upload(request):
             messages.success(request, "File posted successfully")
             return True
         else:
-            return render(request, "transaction/upload.html", {"form": form})
+            return render(request, "transaction/upload.html", context)
     else:
         form = UploadFileForm()
-        return render(request, "transaction/upload.html", {"form": form})
+        context["form"] = form
+        return render(request, "transaction/upload.html", context)
 
 
 class TransactionUpdate(LoginRequiredMixin, UpdateView):

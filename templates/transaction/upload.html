@@ -16,5 +16,25 @@
     <input type="file" name="file" class="form-control" id="inputGroupFile" aria-describedby="inputGroupFileAddon" aria-label="Upload">
   </div>
 </form>
+<h2>Transactions uploaded</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        {% for head in headers %}
+          <th scope="col">{{ head }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in data %}
+      <tr>
+        <td>{{item.activity_period|date:'Y-m'}}</td>
+        <td>{{item.transaction_count}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

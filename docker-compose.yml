@@ -18,12 +18,9 @@ services:
     volumes:
       - ./staticfiles:/usr/src/app/staticfiles/
       - ./media:/usr/src/app/media/
-      - ./logs:/usr/src/app/logs/
     ports:
-      - 127.0.0.1:${LOCAL_WEB_PORT}:8000
+      - ${LOCAL_WEB_PORT}:8000
     env_file: .env
-    environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     depends_on:
       - db
 

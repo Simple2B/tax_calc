@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from django.core.management.utils import get_random_secret_key
 from django.urls import reverse_lazy
 from decouple import config, Csv, Choices
 from dj_database_url import parse as db_url
@@ -24,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default=get_random_secret_key())
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
@@ -108,8 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Auth settings
 LOGIN_URL = reverse_lazy("accounts:login")
 LOGOUT_REDIRECT_URL = reverse_lazy("index")
+AUTHENTICATION_BACKENDS = ("accounts.backends.UserAuthBackend",)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -140,7 +141,12 @@ MEDIA_ROOT = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# debug_toolbar settings
+# Django email backend
+# https://docs.djangoproject.com/en/4.0/topics/email/
+
+EMAIL_BACKEND = f"django.core.mail.backends.{config('EMAIL_BACKEND', default='console')}.EmailBackend"
+
+# Debug Toolbar settings
 if DEBUG:
 
     INTERNAL_IPS = ("127.0.0.1",)
@@ -152,4 +158,3 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         "INTERCEPT_REDIRECTS": False,
     }
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

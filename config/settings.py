@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from django.urls import reverse_lazy
-from decouple import config, Csv, Choices
+from decouple import config, Csv
 from dj_database_url import parse as db_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -155,7 +155,12 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = config("EMAIL_PORT")
 
+# Table Paginate by
+
+PAGINATE_BY = config("PAGINATE_BY", default=25, cast=int)
+
 # Debug Toolbar settings
+
 if DEBUG:
 
     INTERNAL_IPS = ("127.0.0.1",)

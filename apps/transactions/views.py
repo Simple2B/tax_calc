@@ -1,10 +1,12 @@
-from django.shortcuts import render
+import io, csv
+from django.shortcuts import render, redirect
 from django.views.generic import (
     ListView,
     DetailView,
     CreateView,
     UpdateView,
     DeleteView,
+    View,
 )
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 import pandas as pd
 from .models import Transaction
+from config.settings import PAGINATE_BY
 from apps.countries.models import Country
 from .forms import UploadFileForm
 
@@ -24,7 +27,7 @@ User = get_user_model()
 @login_required
 def transactions(request):
     transactions = Transaction.objects.filter(user=request.user)
-    paginator = Paginator(transactions, 25)
+    paginator = Paginator(transactions, PAGINATE_BY)
     page_number = request.GET.get("page")
     page = paginator.get_page(page_number)
     context = {
@@ -44,28 +47,44 @@ class TransactionDetail(LoginRequiredMixin, DetailView):
     model = Transaction
 
 
-@login_required
-def upload(request):
-    statistics = (
-        Transaction.objects.filter(user=request.user)
-        .values("activity_period")
-        .annotate(transaction_count=Count("id"))
-    )
-    context = {
-        "headers": [
-            "ACTIVITY PERIOD",
-            "SIZE",
-        ],
-        "data": statistics,
-    }
-    if request.method == "POST":
-        form = UploadFileForm(request.POST, request.FILES)
-        context["form"] = form
-        if form.is_valid():
+class TransactionsUpload(LoginRequiredMixin, View):
+    form_class = UploadFileForm
+    template_name = "transaction/upload.html"
+    success_url = "transaction/transactions.html"
+
+    def get_context(self, request, *args, **kwargs):
+        statistics = (
+            Transaction.objects.filter(user=request.user)
+            .values("activity_period")
+            .annotate(transaction_count=Count("id"))
+        )
+        context = {
+            "headers": [
+                "ACTIVITY PERIOD",
+                "SIZE",
+            ],
+            "data": statistics,
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context(request)
+        context["form"] = self.form_class()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context(request)
+        context["form"] = self.form_class(request.POST, request.FILES)
+        if context["form"].is_valid():
+            file = request.FILES["file"]
+            if not file.name.endswith(".csv"):
+                messages.warning(request, "File is not CSV type")
+                return redirect("transactions:upload")
             df = pd.read_csv(
                 request.FILES["file"],
                 dtype=object,
             ).fillna(0)
+
             for index, row in df.iterrows():
                 obj = {k.lower(): v for k, v in row.to_dict().items()}
                 obj["user"] = User.objects.get(id=request.user.id)
@@ -92,17 +111,14 @@ def upload(request):
                     transaction.save()
                     transaction.full_clean()
                 except:
-                    messages.success(
-                        request, "Failed in transaction".format(transaction)
+                    messages.warning(
+                        request, ("Failed in transaction".format(transaction))
                     )
-            messages.success(request, "File posted successfully")
-            return True
+            messages.success(request, ("File posted successfully"))
+            return render(request, self.success_url)
         else:
-            return render(request, "transaction/upload.html", context)
-    else:
-        form = UploadFileForm()
-        context["form"] = form
-        return render(request, "transaction/upload.html", context)
+            messages.warning(request, ("Failed to upload file"))
+        return render(request, self.template_name, context)
 
 
 class TransactionUpdate(LoginRequiredMixin, UpdateView):

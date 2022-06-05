@@ -13,7 +13,7 @@
   {% csrf_token %}
   <div class="input-group mb-3">
     <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon">Upload</button>
-    <input type="file" name="file" class="form-control" id="inputGroupFile" aria-describedby="inputGroupFileAddon" aria-label="Upload">
+    <input type="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="form-control" id="inputGroupFile" aria-describedby="inputGroupFileAddon" aria-label="Upload">
   </div>
 </form>
 <h2>Transactions uploaded</h2>

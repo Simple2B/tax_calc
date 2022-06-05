@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import SignUp, Profile, LogIn, LogOut, ResetPassword, ResetPasswordConfirm
+from .views import (
+    SignUp,
+    Profile,
+    LogIn,
+    LogOut,
+    ResetPassword,
+    ResetPasswordConfirm,
+    ActivateAccount,
+)
 
 app_name = "accounts"
 urlpatterns = [
@@ -12,5 +20,10 @@ urlpatterns = [
         "reset_password_confirm/$<uidb64>/<token>/",
         ResetPasswordConfirm.as_view(),
         name="reset_password_confirm",
+    ),
+    path(
+        "activate/$<uidb64>/<token>/",
+        ActivateAccount.as_view(),
+        name="activate",
     ),
 ]

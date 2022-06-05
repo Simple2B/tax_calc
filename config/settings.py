@@ -30,6 +30,8 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1", cast=Csv())
 
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default=None, cast=Csv())
+
 # Application definition
 INSTALLED_APPS = [
     # Default apps
@@ -163,7 +165,7 @@ PAGINATE_BY = config("PAGINATE_BY", default=25, cast=int)
 
 if DEBUG:
 
-    INTERNAL_IPS = ("127.0.0.1", "tax-calc.simple2b.net")
+    INTERNAL_IPS = ("127.0.0.1",)
 
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
 

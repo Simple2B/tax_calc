@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
@@ -36,12 +36,11 @@ class SignUp(View):
         form = self.form_class(request.POST)
         if form.is_valid():
 
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
+            user = form.save()
 
             current_site = get_current_site(request)
             subject = "Activate Your Account"
+            use_https = self.request.is_secure()
             message = render_to_string(
                 "accounts/account_activation_email.html",
                 {
@@ -49,16 +48,14 @@ class SignUp(View):
                     "domain": current_site.domain,
                     "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                     "token": account_activation_token.make_token(user),
+                    "protocol": "https" if use_https else "http",
                 },
             )
             user.email_user(subject, message)
-
             messages.success(
                 request, ("Please Confirm your email to complete registration.")
             )
-
-            return reverse("index")
-
+            return redirect("index")
         return render(request, self.template_name, {"form": form})
 
 
@@ -72,11 +69,10 @@ class ActivateAccount(View):
 
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
-            user.profile.email_confirmed = True
             user.save()
             login(request, user)
             messages.success(request, ("Your account have been confirmed."))
-            return reverse("index")
+            return redirect("index")
         else:
             messages.warning(
                 request,
@@ -84,7 +80,7 @@ class ActivateAccount(View):
                     "The confirmation link was invalid, possibly because it has already been used."
                 ),
             )
-            return reverse("index")
+            return redirect("index")
 
 
 class LogIn(LoginView):

@@ -11,8 +11,10 @@
   <link href="{% static 'bootstrap-5.2.0-beta1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'base/css/signin.css' %}" rel="stylesheet">
 </head>
-
 <body class="text-center">
+  <div class="position-absolute top-0 start-0 d-inline-block w-100 m-auto p-3">
+    {% include 'common/field_errors.html' %}
+  </div>
   <main class="form-signin w-100 m-auto">
     {% block content %}{% endblock %}
   </main>

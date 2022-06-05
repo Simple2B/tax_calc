@@ -110,7 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Auth settings
 LOGIN_URL = reverse_lazy("accounts:login")
 LOGOUT_REDIRECT_URL = reverse_lazy("index")
-AUTHENTICATION_BACKENDS = ("accounts.backends.UserAuthBackend",)
+AUTHENTICATION_BACKENDS = ("apps.accounts.backends.UserAuthBackend",)
+AUTH_USER_MODEL = "accounts.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -145,6 +146,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/4.0/topics/email/
 
 EMAIL_BACKEND = f"django.core.mail.backends.{config('EMAIL_BACKEND', default='console')}.EmailBackend"
+
+# SMTP settings
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = config("EMAIL_PORT")
 
 # Debug Toolbar settings
 if DEBUG:

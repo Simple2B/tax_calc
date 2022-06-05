@@ -22,6 +22,9 @@
         {% include 'common/sidebar.html' %}
       {% endblock %}
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="position-absolute top-0 start-0 d-inline-block w-100 m-auto p-3">
+          {% include 'common/field_errors.html' %}
+        </div>
         {% block toolbar %}
           {% include 'common/toolbar.html' %}
         {% endblock %}

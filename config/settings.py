@@ -163,7 +163,7 @@ PAGINATE_BY = config("PAGINATE_BY", default=25, cast=int)
 
 if DEBUG:
 
-    INTERNAL_IPS = ("127.0.0.1",)
+    INTERNAL_IPS = ("127.0.0.1", "tax-calc.simple2b.net")
 
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
 

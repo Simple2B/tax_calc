@@ -24,9 +24,9 @@ User = get_user_model()
 @login_required
 def transactions(request):
     transactions = Transaction.objects.filter(user=request.user)
-    paginator = Paginator(transactions, 50)
+    paginator = Paginator(transactions, 25)
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page = paginator.get_page(page_number)
     context = {
         "count": len(transactions),
         "headers": [
@@ -35,7 +35,7 @@ def transactions(request):
             "SALES_CHANNEL",
             "MARKETPLACE",
         ],
-        "data": page_obj,
+        "data": page,
     }
     return render(request, "transaction/list.html", context)
 
@@ -54,7 +54,7 @@ def upload(request):
     context = {
         "headers": [
             "ACTIVITY PERIOD",
-            "COUNT",
+            "SIZE",
         ],
         "data": statistics,
     }

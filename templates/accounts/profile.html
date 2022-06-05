@@ -3,14 +3,8 @@
 {% block title %}<title>{{ user.get_username }}</title>{% endblock %}
 
 {% block content %}
-<h2>{{ user.get_username }}</h2>
 <form action="{% url 'accounts:profile' %}" method="post">
   {% csrf_token %}
-  <div class="input-group">
-    <span class="input-group-text">First and last name</span>
-    <input type="text" aria-label="First name" name="first_name" value="{{ form.first_name.value }}" class="form-control">
-    <input type="text" aria-label="Last name" name="last_name" value="{{ form.last_name.value }}" class="form-control">
-  </div>
   <div class="form-floating">
     <input type="username" name="username" class="form-control" value="{{ form.username.value }}" id="floatingInput1" placeholder="Username" required>
     <label for="floatingInput1">Username</label>
@@ -18,6 +12,14 @@
   <div class="form-floating">
     <input type="email" name="email" class="form-control" value="{{ form.email.value }}" id="floatingInput2" placeholder="Email" required>
     <label for="floatingInput2">E-mail</label>
+  </div>
+  <div class="form-floating">
+    <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value }}" id="floatingInput3" placeholder="First name">
+    <label for="floatingInput3">First name</label>
+  </div>
+  <div class="form-floating">
+    <input type="text" name="first_name" class="form-control" value="{{ form.last_name.value }}" id="floatingInput3" placeholder="Last name">
+    <label for="floatingInput4">Last name</label>
   </div>
   <button class="w-100 btn btn-lg btn-secondary" type="submit">Save</button>
 </form>

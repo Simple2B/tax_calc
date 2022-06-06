@@ -21,7 +21,10 @@
     <input type="text" name="first_name" class="form-control" value="{{ form.last_name.value }}" id="floatingInput3" placeholder="Last name">
     <label for="floatingInput4">Last name</label>
   </div>
-  <button class="w-100 btn btn-lg btn-secondary" type="submit">Save</button>
+  <div class="d-flex flex-row flex-nowrap ml-auto mr-sm-5 mr-md-5 mr-lg-0">
+    <button class="w-100 btn btn-lg btn-secondary" type="submit">Save</button>
+    <button class="w-100 btn btn-lg btn-secondary" onclick="location.href='{% url 'accounts:password_change' %}'" type="button">Change Password</button>
+  </div>
 </form>
 
 {% endblock %}

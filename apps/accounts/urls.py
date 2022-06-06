@@ -7,6 +7,7 @@ from .views import (
     ResetPassword,
     ResetPasswordConfirm,
     ActivateAccount,
+    ChangePasswordView,
 )
 
 app_name = "accounts"
@@ -16,6 +17,7 @@ urlpatterns = [
     path("login/", LogIn.as_view(), name="login"),
     path("logout/", LogOut.as_view(), name="logout"),
     path("reset_password/", ResetPassword.as_view(), name="reset_password"),
+    path("password-change/", ChangePasswordView.as_view(), name="password_change"),
     path(
         "reset_password_confirm/$<uidb64>/<token>/",
         ResetPasswordConfirm.as_view(),
